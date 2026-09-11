@@ -1,6 +1,7 @@
 import React from 'react';
 import { BarChart3, Users, BrainCircuit } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import confetti from 'canvas-confetti';
 
 // Grade 6 Assessment Data
 const grade6Data = [
@@ -10,7 +11,7 @@ const grade6Data = [
   { name: 'Highly Proficient', Math: 5.4, Science: 3.9 },
 ];
 
-// Grade 9 SHS Gap Data (Expectation vs Reality)
+// Grade 9 SHS Gap Data
 const shsData = [
   { name: 'STEM', Desired: 47.9, Aptitude: 3.0 },
   { name: 'ABM', Desired: 38.1, Aptitude: 7.9 },
@@ -19,68 +20,96 @@ const shsData = [
 ];
 
 function App() {
+  // The interactive spark function!
+  const triggerSparks = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const x = (rect.left + (rect.width / 2)) / window.innerWidth;
+    const y = (rect.top + (rect.height / 2)) / window.innerHeight;
+
+    confetti({
+      particleCount: 60,
+      spread: 70,
+      origin: { x, y },
+      colors: ['#38bdf8', '#34d399', '#fbbf24'], // Cyan, Emerald, Amber to match our charts
+      disableForReducedMotion: true,
+      ticks: 100, // Makes them disappear a bit faster like electric sparks
+      gravity: 1.2
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 p-8 font-sans">
+    <div className="min-h-screen bg-slate-950 p-8 font-sans relative overflow-hidden text-slate-200">
+
+      {/* Background Glowing Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-5%] w-96 h-96 bg-emerald-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse" style={{ animationDelay: '1s' }}></div>
+
       {/* Header */}
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Institutional Health Dashboard</h1>
-        <p className="text-slate-500 mt-1">De La Salle University Integrated School - Laguna | AY 2025-2026</p>
+      <header className="mb-8 relative z-10 animate-slide-up">
+        <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 tracking-tight">
+          Institutional Health Dashboard
+        </h1>
+        <p className="text-slate-400 mt-2 font-light tracking-wide">De La Salle University Integrated School - Laguna | AY 2025-2026</p>
       </header>
 
       {/* Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
 
         {/* Card 1: Grade 6 Academic Baselines */}
-        <div className="col-span-1 md:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-all hover:shadow-md cursor-default">
-          <div className="flex items-center space-x-2 mb-4">
-            <BarChart3 className="text-emerald-600" />
-            <h2 className="text-xl font-semibold text-slate-700">Grade 6 Academic Baselines (%)</h2>
+        <div className="col-span-1 md:col-span-2 bg-slate-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-slate-700/50 animate-slide-up delay-100">
+          <div className="flex items-center space-x-3 mb-6 border-b border-slate-700/50 pb-4">
+            <BarChart3 className="text-emerald-400" size={28} />
+            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">Grade 6 Academic Baselines (%)</h2>
           </div>
           <div className="h-72 w-full mt-4">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={grade6Data} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b' }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b' }} />
-                <Tooltip cursor={{ fill: '#f1f5f9' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8' }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8' }} />
+                <Tooltip cursor={{ fill: '#1e293b' }} contentStyle={{ backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #334155', color: '#f8fafc' }} />
                 <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-                <Bar dataKey="Math" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Science" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Math" fill="#38bdf8" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Science" fill="#34d399" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Card 2: SEL / The Perseverance Gap */}
-        <div className="col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-all hover:shadow-md cursor-default relative overflow-hidden group">
-          <div className="flex items-center space-x-2 mb-4">
-            <BrainCircuit className="text-blue-600" />
-            <h2 className="text-xl font-semibold text-slate-700">The Perseverance Gap</h2>
+        <div className="col-span-1 bg-slate-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-slate-700/50 relative overflow-hidden group flex flex-col justify-center animate-slide-up delay-200">
+          <div className="flex items-center space-x-3 mb-2 border-b border-slate-700/50 pb-4 absolute top-6 left-6 right-6">
+            <BrainCircuit className="text-blue-400" size={28} />
+            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">The Perseverance Gap</h2>
           </div>
-          <div className="mt-8 relative z-10">
-            <p className="text-6xl font-black text-slate-800 tracking-tighter transition-transform transform group-hover:scale-105 group-hover:text-blue-600 duration-300">3.40</p>
-            <p className="text-sm text-slate-500 mt-3 font-medium">Lowest baseline metric across all grades (Grit)</p>
+          <div className="mt-16 relative z-10 text-center">
+            {/* Added onClick and cursor-pointer to the 3.40 text! */}
+            <p
+              onClick={triggerSparks}
+              className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-500 tracking-tighter drop-shadow-lg cursor-pointer hover:scale-110 transition-transform duration-200 active:scale-95"
+            >
+              3.40
+            </p>
+            <p className="text-sm text-blue-300 mt-6 font-medium uppercase tracking-widest">Lowest baseline across all grades (Grit)</p>
           </div>
-          {/* Subtle background element for aesthetics */}
-          <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
         </div>
 
         {/* Card 3: Grade 9 SHS Track Alignment */}
-        <div className="col-span-1 md:col-span-3 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mt-2 transition-all hover:shadow-md cursor-default">
-          <div className="flex items-center space-x-2 mb-4">
-            <Users className="text-amber-500" />
-            <h2 className="text-xl font-semibold text-slate-700">Grade 9 SHS Alignment: Expectation vs Reality (%)</h2>
+        <div className="col-span-1 md:col-span-3 bg-slate-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-slate-700/50 mt-2 animate-slide-up delay-300">
+          <div className="flex items-center space-x-3 mb-6 border-b border-slate-700/50 pb-4">
+            <Users className="text-amber-400" size={28} />
+            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">Grade 9 SHS Alignment: Expectation vs Reality (%)</h2>
           </div>
           <div className="h-72 w-full mt-4">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={shsData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b' }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b' }} />
-                <Tooltip cursor={{ fill: '#fffbeb' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8' }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8' }} />
+                <Tooltip cursor={{ fill: '#1e293b' }} contentStyle={{ backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #334155', color: '#f8fafc' }} />
                 <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-                <Bar dataKey="Desired" name="Desired Track" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Aptitude" name="Recommended (Aptitude)" fill="#94a3b8" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Desired" name="Desired Track" fill="#fbbf24" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Aptitude" name="Recommended (Aptitude)" fill="#818cf8" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
