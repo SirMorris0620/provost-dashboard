@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList } from 'recharts';
 import CountUp from 'react-countup';
 import confetti from 'canvas-confetti';
+import { Bot, X, Sparkles } from 'lucide-react'; // Added icons for the AI Assistant
 
 // --- DATA ARRAYS ---
 const convergentData = [
@@ -132,6 +133,7 @@ const GlassTooltip = ({ active, payload, label }) => {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('summary');
+  const [isAIOpen, setIsAIOpen] = useState(false); // AI Panel State
 
   const triggerSparks = (e) => {
     const rect = e.target.getBoundingClientRect();
@@ -143,10 +145,23 @@ export default function App() {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsAIOpen(false); // Auto-close AI panel when switching tabs
+  };
+
+  // Dynamic AI Insights based on the active tab
+  const getAIInsight = () => {
+    switch (activeTab) {
+      case 'summary': return "Antigravity AI Insight: The overarching theme across all 1,300+ students is a 'readiness gap'. High aspirations (e.g., STEM) and highly supportive environments are not translating into objective aptitude or personal grit.";
+      case 'shs': return "Antigravity AI Insight: Critical misalignment detected in the Grade 9 cohort. 47.9% desire STEM, but only 3.0% possess the objective aptitude. Recommend immediate bridging programs and redirecting guidance counseling toward high-aptitude tracks like GAS (56.2%).";
+      case 'sel': return "Antigravity AI Insight: 'The Adolescent Dip' is the primary anomaly in this data. Self-efficacy and belonging drop significantly in Grades 7-9, while Grit remains stagnant across all cohorts. Cyber safety vulnerabilities are also highly pronounced in Grades 1-3.";
+      case 'sba': return "Antigravity AI Insight: Grade 6 students demonstrate a strong cognitive bottleneck. They excel at concrete tasks (94-100% in graphing) but fail abstract application (0-3% in Conservation of Energy). This requires an immediate transition to manipulative-based learning.";
+      case 'recs': return "Antigravity AI Insight: Implementation of these three priorities relies heavily on resolving procurement bottlenecks. Ensure internal vendor proposals for hardware are expedited to support the shift to hands-on, abstract reasoning scaffolding.";
+      default: return "Antigravity AI Assistant ready.";
+    }
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col selection:bg-[#3b7b59] selection:text-white">
+    <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col selection:bg-[#3b7b59] selection:text-white relative">
 
       {/* CSS ANIMATIONS */}
       <style>{`
@@ -168,7 +183,7 @@ export default function App() {
       `}</style>
 
       {/* ---------------- NAVIGATION BAR ---------------- */}
-      <nav className="sticky top-0 z-50 bg-[#1a4331]/95 backdrop-blur-md text-white shadow-lg border-b-[4px] border-[#f6b21c] transition-all duration-300">
+      <nav className="sticky top-0 z-40 bg-[#1a4331]/95 backdrop-blur-md text-white shadow-lg border-b-[4px] border-[#f6b21c] transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex flex-wrap justify-center md:justify-between items-center gap-4">
           <div className="font-serif font-bold text-xl hidden lg:block tracking-tight text-[#f6b21c] hover:scale-105 transition-transform">DLSU IS Data Report</div>
           <div className="flex flex-wrap justify-center gap-2 md:gap-3 text-sm font-semibold">
@@ -838,12 +853,41 @@ export default function App() {
             <div className="mt-12 text-center text-gray-500 animate-fade-in delay-200">
               <h2 className="text-3xl font-serif font-bold text-[#1a4331] mb-2">Thank You</h2>
               <p className="text-lg mb-4">Questions and Discussion</p>
-              <p className="text-sm font-bold uppercase tracking-widest text-[#3b7b59]">STREAM & Robotics Department • De La Salle University Integrated School – Laguna</p>
+              <p className="text-sm font-bold uppercase tracking-widest text-[#3b7b59]">Office of The Vice Principal for Teaching and Learning • De La Salle University Integrated School – Laguna</p>
             </div>
-
           </div>
         )}
       </main>
+
+      {/* ---------------- ITEM 4: FLOATING AI COMMAND CENTER ---------------- */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        {/* The Slide-Out Panel */}
+        {isAIOpen && (
+          <div className="mb-4 w-80 sm:w-96 bg-white/90 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-2xl p-6 animate-fade-in origin-bottom-right">
+            <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
+              <div className="flex items-center text-[#1a4331] font-bold">
+                <Sparkles size={20} className="mr-2 text-[#f6b21c]" />
+                Google Antigravity AI
+              </div>
+              <button onClick={() => setIsAIOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {getAIInsight()}
+            </p>
+          </div>
+        )}
+
+        {/* The Floating Action Button */}
+        <button
+          onClick={() => setIsAIOpen(!isAIOpen)}
+          className={`flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 ${isAIOpen ? 'bg-[#f6b21c] text-[#1a4331]' : 'bg-[#1a4331] text-white hover:bg-[#2a5a41]'}`}
+        >
+          {isAIOpen ? <X size={28} /> : <Bot size={28} />}
+        </button>
+      </div>
+
     </div>
   );
 }
