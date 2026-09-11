@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, Users, BrainCircuit } from 'lucide-react';
+import { BarChart3, Users, BrainCircuit, Target, TrendingDown, Wrench } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import confetti from 'canvas-confetti';
 
@@ -20,7 +20,6 @@ const shsData = [
 ];
 
 function App() {
-  // The interactive spark function!
   const triggerSparks = (e) => {
     const rect = e.target.getBoundingClientRect();
     const x = (rect.left + (rect.width / 2)) / window.innerWidth;
@@ -30,9 +29,9 @@ function App() {
       particleCount: 60,
       spread: 70,
       origin: { x, y },
-      colors: ['#38bdf8', '#34d399', '#fbbf24'], // Cyan, Emerald, Amber to match our charts
+      colors: ['#38bdf8', '#34d399', '#fbbf24'],
       disableForReducedMotion: true,
-      ticks: 100, // Makes them disappear a bit faster like electric sparks
+      ticks: 100,
       gravity: 1.2
     });
   };
@@ -42,7 +41,7 @@ function App() {
 
       {/* Background Glowing Orbs */}
       <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
-      <div className="absolute bottom-[-10%] right-[-5%] w-96 h-96 bg-emerald-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute bottom-[10%] right-[-5%] w-96 h-96 bg-emerald-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse" style={{ animationDelay: '1s' }}></div>
 
       {/* Header */}
       <header className="mb-8 relative z-10 animate-slide-up">
@@ -52,14 +51,15 @@ function App() {
         <p className="text-slate-400 mt-2 font-light tracking-wide">De La Salle University Integrated School - Laguna | AY 2025-2026</p>
       </header>
 
-      {/* Bento Grid */}
+      {/* TOP ROW: Main Data Visualizations */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
 
         {/* Card 1: Grade 6 Academic Baselines */}
         <div className="col-span-1 md:col-span-2 bg-slate-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-slate-700/50 animate-slide-up delay-100">
           <div className="flex items-center space-x-3 mb-6 border-b border-slate-700/50 pb-4">
             <BarChart3 className="text-emerald-400" size={28} />
-            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">Grade 6 Academic Baselines (%)</h2>
+            {/* UPDATED TITLE HERE */}
+            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">Grade 6 Standards-Based Assessment (SBA): Math vs. Science (%)</h2>
           </div>
           <div className="h-72 w-full mt-4">
             <ResponsiveContainer width="100%" height="100%">
@@ -80,17 +80,18 @@ function App() {
         <div className="col-span-1 bg-slate-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-slate-700/50 relative overflow-hidden group flex flex-col justify-center animate-slide-up delay-200">
           <div className="flex items-center space-x-3 mb-2 border-b border-slate-700/50 pb-4 absolute top-6 left-6 right-6">
             <BrainCircuit className="text-blue-400" size={28} />
-            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">The Perseverance Gap</h2>
+            {/* UPDATED TITLE HERE */}
+            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">Socio-Emotional Learning (SEL): The Perseverance Gap</h2>
           </div>
           <div className="mt-16 relative z-10 text-center">
-            {/* Added onClick and cursor-pointer to the 3.40 text! */}
             <p
               onClick={triggerSparks}
               className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-500 tracking-tighter drop-shadow-lg cursor-pointer hover:scale-110 transition-transform duration-200 active:scale-95"
             >
               3.40
             </p>
-            <p className="text-sm text-blue-300 mt-6 font-medium uppercase tracking-widest">Lowest baseline across all grades (Grit)</p>
+            {/* UPDATED SUBTEXT HERE */}
+            <p className="text-sm text-blue-300 mt-6 font-medium uppercase tracking-widest">Lowest SEL Dimension Score Across All Cohorts (Grit)</p>
           </div>
         </div>
 
@@ -98,7 +99,8 @@ function App() {
         <div className="col-span-1 md:col-span-3 bg-slate-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-slate-700/50 mt-2 animate-slide-up delay-300">
           <div className="flex items-center space-x-3 mb-6 border-b border-slate-700/50 pb-4">
             <Users className="text-amber-400" size={28} />
-            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">Grade 9 SHS Alignment: Expectation vs Reality (%)</h2>
+            {/* UPDATED TITLE HERE */}
+            <h2 className="text-xl font-semibold text-slate-100 tracking-wide">Grade 9 SHS Tracks: Desired vs. Aptitude-Recommended (%)</h2>
           </div>
           <div className="h-72 w-full mt-4">
             <ResponsiveContainer width="100%" height="100%">
@@ -114,8 +116,46 @@ function App() {
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
+
+      {/* BOTTOM ROW: Strategic Narrative Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 relative z-10 mb-8">
+
+        {/* Narrative 1: Concrete vs Abstract */}
+        <div className="col-span-1 bg-slate-900/60 backdrop-blur-md rounded-xl p-5 border border-slate-700/50 animate-slide-up delay-500">
+          <div className="flex items-center space-x-2 mb-3">
+            <Target className="text-emerald-400" size={20} />
+            <h3 className="text-lg font-semibold text-slate-200">The Abstract Deficit</h3>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            While 50.4% of Grade 6 Math students are "Progressing," item analysis reveals a cognitive bottleneck. Students excel at concrete tasks (<span className="text-slate-200 font-medium">94-100% in graph reading</span>) but fail abstract reasoning concepts (<span className="text-slate-200 font-medium">0-3% in Law of Conservation of Energy; 3-10% in probability listings</span>).
+          </p>
+        </div>
+
+        {/* Narrative 2: Adolescent Dip */}
+        <div className="col-span-1 bg-slate-900/60 backdrop-blur-md rounded-xl p-5 border border-slate-700/50 animate-slide-up delay-500" style={{ animationDelay: '600ms' }}>
+          <div className="flex items-center space-x-2 mb-3">
+            <TrendingDown className="text-blue-400" size={20} />
+            <h3 className="text-lg font-semibold text-slate-200">The Adolescent Dip</h3>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            Despite high institutional environmental marks (Physical Surroundings peak at 4.31), an internal drive gap exists. Grit consistently scores the lowest across all cohorts (3.40), while Grades 7-9 suffer a severe drop in Sense of Belonging (3.51) and <span className="text-slate-200 font-medium">Self-Efficacy hits an institutional low of 3.48</span>.
+          </p>
+        </div>
+
+        {/* Narrative 3: Strategic Action Plan */}
+        <div className="col-span-1 bg-slate-900/60 backdrop-blur-md rounded-xl p-5 border border-slate-700/50 animate-slide-up delay-500" style={{ animationDelay: '700ms' }}>
+          <div className="flex items-center space-x-2 mb-3">
+            <Wrench className="text-amber-400" size={20} />
+            <h3 className="text-lg font-semibold text-slate-200">Strategic Action Plan</h3>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            The abstract deficit and low self-efficacy are funneling underprepared students into STEM. We must shift to <span className="text-slate-200 font-medium">interactive, tactile lab interventions</span>. Hardware budgets exist, but execution requires submitting requests to procurement and selecting internal vendor proposals rapidly to bypass administrative bottlenecks.
+          </p>
+        </div>
 
       </div>
+
     </div>
   );
 }
